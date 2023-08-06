@@ -1,0 +1,103 @@
+
+yum install git -y 			 to install git
+git init				 initialise git on the current folder
+git status				 to check status
+git status -s				 to check the status (one line)
+git add <file name>			 to move from working dir to staging dir
+git rm --cached <file name>		 to move from staging dir to working dir
+
+GIT CONFIG
+-----------
+git config -l				 to find user credentials
+git config --global user.name<user name> to add user name
+git config --global user.email<mail id>	 to add user email
+git config --global --unset user.name	 to remove user configuration user name
+git config --global --unset user.email	 to remove user configuration user email
+
+GIT COMMIT
+----------
+git commit -m				 to move from staging dir to local repo
+
+
+GIT LOG
+-------
+git log					 to check logs
+git log --oneline			 to check logs in one line		
+git reflog
+
+GIT BRANCH
+----------
+git branch				 list only local branches
+git branch -a				 list all the local and remote branches
+git branch -r				 list only remote branches
+git branch <branch name>		 create new branch
+git branch -d <branch name>		 remove the branch from local repo
+
+GIT CHECKOUT
+------------
+git checkout <branch name>
+git checkout -b <branch name>		 create and move to a new branch
+
+GIT MERGE
+----------
+git merge <branch name>			 merge the branch with current branch
+git merge origin/master			 merge the current branch with master and origin
+
+
+GIT PUSH
+---------
+git push -u origin <master branch name>	 push to remote repo from master branch
+git push origin				 push to git repo
+
+git fetch origin			 get all the change from origin to branch
+
+git pull origin 			 update the current branch from its origin
+
+GIT CLONE
+----------
+git clone <URL>				 clone the repo to local repo
+git clone <URL> <Folder name>		 clone the repo to a folder in local repo
+
+GIT REMOTE
+----------
+git remote 				 to list the remote connection
+git remote -v				 to list the remote connection with URL
+git remote add origin <url of repo>	 add a remote repo as an origin
+git remote rm <name>			 to remove the connection to the remote repo
+git remote rename <old name> <new name>  rename the remote connection 
+
+GIT REVERT
+----------
+git revert HEAD				 revert the latest commit
+git revert HEAD --no-edit		 revert the latest commit, skipping the commit msg editor
+git revert HEAD~<no>			 revert the earlier commits
+
+GIT CLEAN
+----------
+git clean -n 				 to see a dry run
+git clean -f 				 to force untracked file deletion
+git clean -f -d 			 to remove untracked directories
+git clean -f -x  			 to remove untracked .gitignore files
+
+
+git commit --amend --author "New Author Name <New Author Email>"	to edit author name 
+
+GIT SQUASH 
+-----------
+git rebase -i head~3
+
+GIT STASH 
+----------
+git stash 				 save it temporarily
+git stash list 				 check the stored stashes
+git stash save "<stashing message>" 	 stash a change with message
+git stash apply 			 re-apply the changes
+git stash apply <stash id> 		 more than one stash, use stash ID to apply particular commit
+git stash show 				 to see the changes in the file before and after stash
+git stash show -p 			 to display the changed the content of the file
+git stash pop 				 stash pop command that deletes the stash from the stack after it is applied
+git stash drop 				 delete a recent stash from the queue
+git stash drop <stash id> 		 delete a particular stash from available stashes using stash ID
+git stash drop stash@{1} 		 don't want to drop my most recent stash, but want to delete the older one
+git stash clear   			 delete all the available stash
+git stash branch <branch name> 		 command allows the user to stash work on a separate new branch to avoid conflicts

@@ -1,0 +1,217 @@
+Docker Commands
+---------------
+
+Installation Commands:
+
+linux
+-----
+yum install docker 
+service docker start
+
+ubuntu
+------
+apt-get update
+apt install docker.io -y
+
+
+docker --version			to check version
+
+
+Docker File:
+------------
+The configuration file. Sets up a Docker container when you run docker build on it.
+
+Sections/Directives in a Dockerfile:
+
+.dockerignore 		- Files and directories to be ignored during the build -t of the Dockerfile
+FROM 			- Sets the base image for subsequent instructions
+MAINTAINER 		- Sets the Author field of the generated images
+RUN 			- Executes any commands in a new layer on top of the current image 
+			and commits the results
+CMD 			- Provides defaults for an executing container
+EXPOSE 			- Informs Docker that the container listens on the specified network ports at
+			runtime; does not make ports accessible
+ENV 			- Sets environment variables
+ADD 			- Copies new files, directories or remote file to container; 
+			invalidates caches; avoid ADD and use COPY instead
+COPY 			- Copies new files or directories to container
+ENTRYPOINT 		- Configures a container that will run as an executable
+VOLUME 			- Creates a mount point for externally-mounted volumes or other containers
+USER 			- Sets the username for following RUN/CMD/ENTRYPOINT commands
+WORKDIR 		- Sets the working directory
+ARG 			- Defines a build-time variable
+ONBUILD 		- Adds a trigger instruction when the image is used as the base for another build
+STOPSIGNAL 		- Sets the system call signal that will be sent to the container to exit
+LABEL 			- Apply key/value metadata to your images, containers, or daemons
+
+
+
+Images
+------
+docker images				to list the images in local
+docker pull <image name>		to download image from docker hub
+docker push <image name>		to push image from local to hub
+docker rmi  <image name>		to remove an image
+docker history <image name>		to view history of the image
+docker build -t <image name> .		to build image from docker file
+
+Docker run
+----------
+docker run -itd --name <cont.Name> -p "<port no:image port>" <image name>	to create container
+	-i  -input/interact
+	-t  -terminal
+	-d  -detach
+docker run -itd --restart always --name <cont.name> -p"port no" <image name>	to create a container
+
+docker create 					to Create a container but does not start it
+docker update --restart=always <cont.ID>	to restart of existing container in case of reboot
+
+
+docker run -itd --name raj19u -p "3450:80" -v "/usr/local/apache2/htdocs" httpd
+docker run -itd --name raj12u -p "3458:80" -v "/var/lib/docker/volumes/sen:/usr/local/apache2/htdocs" httpd
+
+
+Lifecycle of Containers (Create, Run, Build, Commit)
+------------------------
+docker images 		 Shows all images
+docker import 	 	 Creates an image from a tarball
+docker build 		 Creates image from Dockerfile
+docker commit 		 Creates image from a container, pausing it temporarily if it is running
+docker rmi 		 Removes an image
+docker load 		 Loads an image from a tar archive as STDIN, including images and tags 
+docker save 		 Saves an image to a tar archive stream to STDOUT with all parent layers, 
+			 tags and versions.
+
+Docker Container
+----------------
+docker ps				to list the running container
+docker ps -a 				to list all containers
+docker exec -it <cont.ID> /bin/bash 	to open a container
+docker start <cont>ID>			to start a container
+docker stop <cont.ID> 			to stop a container
+docker restart <cont.ID>		to Stop and starts a container
+docker pause <cont>ID>			to pause a container
+docker unpause <cont.ID>		to unpause a container
+docker rename <cont.name> <new name>	to rename a container
+docker wait 				to Block until running container stops
+docker kill <cont.ID>			to Send a SIGKILL to a running container
+docker attach <cont.ID>			to Connect to a running container
+docker stats				to list usage and specs of all containers
+docker top <cont.ID>			to list usage and specs of specific container
+docker inspect <Cont.ID>		to Look all the info on a container (including IP address)
+docker logs <cont.ID> 			to view the logs 
+docker events 				to Gets events from container
+docker port 				to Show public facing port of container
+docker diff <cont.ID>			to Show changed files in the container’s filesystem
+docker rm <cont.ID>			to Delete a container
+docker update <cont.ID>			to Update a container’s resource limits
+docker run --rm <cont.ID>		to Remove container when stopped
+docker run -v $HOSTDIR•$DOCKERDIR 	to Map a directory on the host to the Docker container;
+					also Volumes
+docker rm -v <cont.ID>			to Remove volumes associated with container
+docker run --log-driver=syslog 		to Run Docker with custom log driver
+
+Delete
+--------
+docker rm  <cont.ID>			to delete a stopped container
+docker rm -f <cont.ID>  		to delete a running container forcefully
+docker rmi <image name>			to delete a image
+docker system prune -a 			to delete all the stopped containers and images
+docker images prune 			to delete all unused images
+docker container prune 			to delete all stopped containers
+docker volume prune			to delete all unused volumes
+
+
+Login
+------
+docker login				to login to docker hub
+docker logout 				to logout from docker hub
+
+Import/Export Container
+-----------------------
+
+docker cp 		 Copies files or folders between a container and the local filesystem
+docker export 	 	 Turns container filesystem into tarball archive stream to STDOUT
+
+Import a container as an image from file:
+	cat my_container.tar.gz | docker import - my_image•my_tag
+
+Export an existing container:
+	docker export my_container > my_container.tar.gz
+
+Differences between loading a saved image and importing an exported container as an image:
+
+Loading an image using the load command creates a new image, including its history.
+
+Importing a container as an image using the import command creates a new image, excluding the
+history which results in a smaller image size compared to loading an image.
+
+
+Conatiner to Image in Local
+---------------------------
+docker commit <cont.ID> <image name>			to create a image from container in local
+docker save -o <path/imagename.tar> <image name>	to save the image in tar format 
+docker load -i <image.tar>				to create a image from tar format
+
+Container to Image in Hub
+-------------------------
+docker tag <image name> <docker hub/imagename:tag name>	to tag the image before pushing to hub
+docker push <docker hub/imagename:tag name>		to push the image to docker hub
+
+Repositories
+------------
+
+docker login 		 Logs into a registry
+docker logout 	 	 Logs out from a registry
+docker search 	 	 Searches registry for image
+docker pull 		 Pulls an image from registry to local machine
+docker push 		 Pushes an image to the registry from local machine
+
+Volumes -
+---------
+ Docker volumes are free-floating filesystems. They don’t have to be connected to a 
+particular container.You could use volumes mounted from data-only containers for portability.
+
+docker volume create					to create a volume 
+docker volume create <volume name>			to create a volume with name
+docker volume inspect <volume name>			to inspect a volume
+docker volume ls					to list volumes
+docker volume prune					to delete all śunused volumes
+docker volume rm <volume name>				to delete a volume
+
+Docker Networks:
+----------------
+ Docker network is a communication bridge between containers, 
+allowing them to securely communicate with each other and other network resources. 
+Docker provides different network drivers to create and manage networks.
+
+docker network ls						to list the networks
+docker network create --driver <network type> <network name>	to create a network	
+docker network connect <network type> <cont.Name>		to connect network with container
+docker network disconnect <network type> <cont.Name>		to disconnsct netwrok of the container
+docker network inspect -v <network type> <network name>		to inspect the network
+docker network prune						to delete all unused networks
+docker network rm <network name>				to delete the network
+docker network rm <network name> <network name>			to delete the multiple network in single command
+
+Docker compose:
+---------------
+ Docker Compose used to easily spin up and manage multiple containers as a single application.
+It allows you to define a set of services, their configurations, and how they interact with each other, 
+all in a declarative YAML file. 
+
+docker-compose up		to start the services defined in the Docker Compose file
+docker-compose up -d		to start the services in detached mode, running them in the background
+docker-compose down		to stop and remove the containers, networks, and volumes
+docker-compose ps		to list the running containers and their status
+docker-compose logs		to display the logs of the running services
+docker-compose build		to build or rebuild the services defined in the Docker Compose file
+docker-compose exec		to execute a command within a running container
+docker-compose restart		to restart the services without rebuilding the containers
+docker-compose pause		to pause the services, suspending their processes
+docker-compose unpause		to unpause the services, resuming their processes
+
+
+
+
+
